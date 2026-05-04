@@ -27,7 +27,7 @@ export default async function NotesByCategory({ params }: Props) {
     return (
         <div className={css.app}>
             <HydrationBoundary state={dehydrate(queryClient)}>
-                <Notes />
+                <Notes tag={tagToQuery} />
             </HydrationBoundary>
         </div>
     );

@@ -2,9 +2,9 @@
 
 import { fetchNotes } from "@/lib/api";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
-import Notes from "../../Notes.client";
+import Notes from "./Notes.client";
 
-import css from "../../Notes.module.css";
+import css from "./Notes.module.css";
 import { NoteTag } from "@/types/note";
 
 

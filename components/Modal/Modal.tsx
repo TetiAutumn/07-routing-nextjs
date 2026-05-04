@@ -2,16 +2,22 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import css from "./Modal.module.css";
+import { useRouter } from 'next/navigation';
 
 interface ModalProps {
-  onClose: () => void;
+  onClose?: () => void;
   children: React.ReactNode;
 }
 
 export function Modal({ onClose, children }: ModalProps) {
+
+  const router = useRouter();
+
+  const close = () => router.back();
+
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") onClose?.();
     };
 
     window.addEventListener("keydown", handleEsc);
@@ -26,7 +32,13 @@ export function Modal({ onClose, children }: ModalProps) {
 
   // Закриття по кліку на backdrop
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) onClose();
+    if (e.target === e.currentTarget) {
+      if (onClose){
+        onClose();
+      } else {
+        close();
+      }
+    }
   };
 
   return createPortal(

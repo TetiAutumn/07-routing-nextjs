@@ -10,15 +10,21 @@ import Pagination from "@/components/Pagination/Pagination";
 import { useDebouncedCallback } from "use-debounce";
 
 import css from "./Notes.module.css";
+import { useParams } from "next/navigation";
+import { NoteTag } from "@/types/note";
 
 export default function Notes() {
+    const { slug } = useParams<{ slug: string[] | undefined }>();
+
+    const tagToQuery =slug && slug[0] !== 'all' ? slug[0] as NoteTag : '';
+
     const [search, setSearch] = useState("");
     const [showModal, setShowModal] = useState(false);
     const [page, setPage] = useState<number>(1);
 
     const { data } = useQuery({
-        queryKey: ["notes", search, page],
-        queryFn: () => fetchNotes(search, page),
+        queryKey: ["notes", search, page, tagToQuery],
+        queryFn: () => fetchNotes({ search, page, tag: tagToQuery }),
         placeholderData: keepPreviousData,
         refetchOnMount: false,
     });

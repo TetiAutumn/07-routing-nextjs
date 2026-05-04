@@ -12,14 +12,22 @@ export interface CreateNoteOptions {
     tag: NoteTag
 }
 
+interface FetchNotesOptions {
+    search?: string;
+    page?: number;
+    tag?: NoteTag | '';
+}
+
 const headers = {
     'Authorization': `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
 }
 
-export const fetchNotes = async (search: string = '', page: number = 1): Promise<FetchNotesResponse> => {
+export const fetchNotes = async (options: FetchNotesOptions): Promise<FetchNotesResponse> => {
     try {
+        const { search, page, tag } = options;
+        
         const response = await axios.get<FetchNotesResponse>(
-            `https://notehub-public.goit.study/api/notes?search=${search}&page=${page}`,
+            `https://notehub-public.goit.study/api/notes?search=${search}&page=${page}${tag ? `&tag=${tag}` : ''}`,
             { headers }
         );
         return response.data;
